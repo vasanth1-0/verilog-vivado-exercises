@@ -1,0 +1,26 @@
+// 4:1 multiplexer with true output y and complemented output y_bar
+module mux4_to_1_with_complement (
+    input  wire [1:0] sel,    // 2-bit select
+    input  wire       d0,     // data inputs
+    input  wire       d1,
+    input  wire       d2,
+    input  wire       d3,
+    output reg        y,      // true output
+    output wire       y_bar   // complemented output
+);
+
+    // Combinational selection
+    always @(*) begin
+        case (sel)
+            2'b00: y = d0;
+            2'b01: y = d1;
+            2'b10: y = d2;
+            2'b11: y = d3;
+            default: y = 1'bx;
+        endcase
+    end
+
+    // Complement the result
+    assign y_bar = ~y;
+
+endmodule
