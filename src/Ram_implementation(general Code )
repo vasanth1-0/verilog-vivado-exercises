@@ -1,0 +1,39 @@
+
+// Implementing Distributed RAM (General code) - Single Port
+module ram_general(
+    input clk,
+    input we,
+    input [5:0] addr,
+    input rst,
+    input [7:0] din,
+    output [7:0] read
+);
+
+    // 64 x 8-bit memory
+    reg [7:0] mem [63:0];
+    reg [7:0] temp;
+
+    always @(posedge clk) begin
+        if (rst) begin
+            for (integer i = 0; i < 64; i = i + 1) begin
+                mem[i] <= 8'h00;
+            end
+            temp <= 8'h00;
+        end 
+        else begin
+            if (we) begin
+                // Write operation
+                mem[addr] <= din;
+            end 
+            else begin
+                // Read operation
+                temp <= mem[addr];
+            end
+        end
+    end
+
+    // Output is registered
+    assign read = temp;
+
+endmodule
+
